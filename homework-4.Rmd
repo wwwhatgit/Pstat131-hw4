@@ -29,6 +29,7 @@ Make sure you load the `tidyverse` and `tidymodels`!
 
 Create a recipe for this dataset **identical** to the recipe you used in Homework 3.
 ```{r}
+set.seed(3435)
 library(ggplot2)
 library(tidyverse)
 library(tidymodels)
@@ -88,8 +89,12 @@ In your own words, explain what we are doing in Question 2. What is *k*-fold cro
 
 
 A: 
+In Question 2 we take the training data and split the data into 10 different group, each fold take 1 out of them as testing set and the rest as training set. 
 
+Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample. The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. 
 
+Using k-fold we can effectively use our dataset to build a more generalized model. Using the entire training set to test the model will take too much time if we have a large dataset.
+If we did us the entire training set that will be LOOCV (Leave One Out Cross Validation)
 
 
 
@@ -147,7 +152,7 @@ qda_wkflow <- workflow() %>%
 ### Question 5
 
 Fit each of the models created in Question 4 to the folded data.
-```{r, eval = FALSE}
+```{r}
 
 
 log_fit_rs <- fit_resamples(log_wkflow, titanic_folds)
@@ -170,7 +175,7 @@ Use `collect_metrics()` to print the mean and standard errors of the performance
 
 Decide which of the 3 fitted models has performed the best. Explain why. *(Note: You should consider both the mean accuracy and its standard error.)*
 
-A: logistic model has the best performance in this example it has highest mean accuracy and lowest standard error
+A: logistic model has the best performance in this example it has about the same mean accuracy as qda fit and lowest standard error
 
 ```{r}
 
@@ -197,7 +202,9 @@ Finally, with your fitted model, use `predict()`, `bind_cols()`, and `accuracy()
 
 Compare your model’s testing accuracy to its average accuracy across folds. Describe what you see.
 
-By comparing the testing accuracy and average folds accuracy we can see that the testing accuracy is off by about 5%, that gives us the same result as homework 3 that the training model has higher accuracy than the testing model. I think the value is differ because the training set has too much data than the testing set, that could cause some over fitting
+By comparing the testing accuracy and average folds accuracy we can see that the testing accuracy is about the same with our training accuracy. That means our model is making good prediction. 
+
+
 ```{r}
 
 predict(log_fit, new_data = titanic_test, type = "prob")
